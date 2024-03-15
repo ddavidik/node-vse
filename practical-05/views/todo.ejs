@@ -1,0 +1,19 @@
+<a href="/">Zpátky</a>
+
+<h1>TUDŮČKO</h1>
+
+<br />
+
+<div>
+  <%= todo.title %>
+  <a href="/toggle-todo/<%= todo.id %>"
+    ><%= todo.done ? 'hotovo' : 'nehotovo' %></a
+  >
+  <a href="/remove-todo/<%= todo.id %>">odebrat</a>
+</div>
+<br />
+
+<form method="post" action="/edit-todo/<%= todo.id %>">
+  <input placeholder="Název todo" aria-label="Name" name="title" />
+  <button type="submit">Upravit název</button>
+</form>

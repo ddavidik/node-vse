@@ -1,0 +1,15 @@
+<h1>TUDŮČKA</h1>
+
+<ul>
+  <% for (const todo of todos) { %>
+  <li>
+    <a href="/todo/<%= todo.id %>"><%= todo.title %></a>
+    <a href="/remove-todo/<%= todo.id %>">odebrat</a>
+  </li>
+  <% } %>
+</ul>
+
+<form method="post" action="/add-todo">
+  <input placeholder="Název todo" aria-label="Name" name="title" />
+  <button type="submit">Přidat</button>
+</form>
