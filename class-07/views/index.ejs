@@ -1,0 +1,21 @@
+<div style="padding: 0.5rem">
+  <h1>TUDŮČKA!</h1>
+
+  <div id="todoList"><%- include('_todos') %></div>
+
+  <script>
+    const ws = new WebSocket('ws://localhost:3000');
+
+    ws.addEventListener('message', (event) => {
+      const data = JSON.parse(event.data);
+
+      if (data.type === 'todoList')
+        document.getElementById('todoList').innerHTML = data.html;
+    });
+  </script>
+
+  <form method="post" action="/add-todo">
+    <input placeholder="Název todo" aria-label="Name" name="title" />
+    <button type="submit">Přidat</button>
+  </form>
+</div>
