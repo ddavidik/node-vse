@@ -15,7 +15,7 @@
       >Priorita: <%= todo.priority %></strong
     >
     <form
-      method="GET"
+      method="POST"
       action="/toggle-todo/<%= todo.id %>"
       style="display: inline"
     >
@@ -35,9 +35,9 @@
 
   <form method="post" action="/update-priority/<%= todo.id %>">
     <select name="priority" id="priority">
-      <option value="low">Low</option>
-      <option value="normal">Normal</option>
-      <option value="high">High</option>
+      <option value="low" <%= todo.priority === 'low' ? 'selected' : '' %>>Low</option>
+      <option value="normal" <%= todo.priority === 'normal' ? 'selected' : '' %>>Normal</option>
+      <option value="high" <%= todo.priority === 'high' ? 'selected' : '' %>>High</option>
     </select>
     <button type="submit">Změnit prioritu</button>
   </form>
