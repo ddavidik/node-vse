@@ -8,37 +8,30 @@
 
   <br />
 
-  <div>
-    <%= todo.title %> -
-    <strong
-      style="color: <%= todo.priority === 'high' ? '#ff0000' : todo.priority === 'normal' ? '#ffcc00' : '#008000'; %>"
-      >Priorita: <%= todo.priority %></strong
-    >
-    <form
-      method="POST"
-      action="/toggle-todo/<%= todo.id %>"
-      style="display: inline"
-    >
-      <label for="done">Hotovo?</label>
-      <input type="checkbox" name="done" onchange="this.form.submit()" <%=
-      todo.done ? 'checked' : '' %> />
-      <input type="hidden" name="id" value="<%= todo.id %>" />
-    </form>
-    <a href="/remove-todo/<%= todo.id %>">odebrat</a>
-  </div>
-  <br />
+  <div id="todo_detail"><%- include('_todo') %></div>
 
-  <form method="post" action="/edit-todo/<%= todo.id %>">
-    <input placeholder="Název todo" aria-label="Name" name="title" />
-    <button type="submit">Upravit název</button>
-  </form>
+  <script>
+    const ws = new WebSocket('ws://localhost:3000');
 
-  <form method="post" action="/update-priority/<%= todo.id %>">
-    <select name="priority" id="priority">
-      <option value="low" <%= todo.priority === 'low' ? 'selected' : '' %>>Low</option>
-      <option value="normal" <%= todo.priority === 'normal' ? 'selected' : '' %>>Normal</option>
-      <option value="high" <%= todo.priority === 'high' ? 'selected' : '' %>>High</option>
-    </select>
-    <button type="submit">Změnit prioritu</button>
-  </form>
+    ws.addEventListener('message', (event) => {
+      const data = JSON.parse(event.data);
+      const path = window.location.pathname.match(/todo\/(\d+)/);
+      const { id, isDeleted, type, html } = data;
+
+      if (type !== 'todo' || !path) return;
+
+      const todoId = path[1];
+      const doesIdMatch = Number(todoId) === id;
+
+      if (!doesIdMatch) return;
+
+      if (isDeleted) {
+        alert('Tohle todo bylo smazáno.');
+        window.location.href = '/';
+        return;
+      }
+
+      document.getElementById('todo_detail').innerHTML = html;
+    });
+  </script>
 </div>
