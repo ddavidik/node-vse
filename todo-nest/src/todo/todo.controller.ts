@@ -3,40 +3,46 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
+  Put,
+  HttpCode,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
-import { CreateTodoDto } from './dto/create-todo.dto';
-import { UpdateTodoDto } from './dto/update-todo.dto';
+import { CreateTodoDto, createTodoSchema } from './dto/create-todo.dto';
+import { updateTodoSchema, UpdateTodoDto } from './dto/update-todo.dto';
+import { ZodPipe } from '../pipe/zodPipe';
 
-@Controller('todo')
+@Controller('todos')
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
   @Post()
-  create(@Body() createTodoDto: CreateTodoDto) {
-    return this.todoService.create(createTodoDto);
+  async create(@Body(new ZodPipe(createTodoSchema)) body: CreateTodoDto) {
+    return this.todoService.create(body);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.todoService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.todoService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
-    return this.todoService.update(+id, updateTodoDto);
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body(new ZodPipe(updateTodoSchema)) body: UpdateTodoDto,
+  ) {
+    return this.todoService.update(+id, body);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  @HttpCode(204)
+  async remove(@Param('id') id: string) {
     return this.todoService.remove(+id);
   }
 }
