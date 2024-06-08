@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { SupabaseModule } from './supabase/supabase.module';
+import { AuthGuardProvider } from './auth/providers/auth-guard.provider';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { SupabaseModule } from './supabase/supabase.module';
     SupabaseModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AuthGuardProvider],
 })
 export class AppModule {}
