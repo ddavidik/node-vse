@@ -9,8 +9,6 @@ export const DrizzleProvider: Provider = {
   useFactory: async (configService: ConfigService) => {
     const connectionString = configService.get('SUPABASE_DB_URL');
 
-    console.log(connectionString);
-
     const client = await postgres(connectionString, {
       prepare: false,
     });
