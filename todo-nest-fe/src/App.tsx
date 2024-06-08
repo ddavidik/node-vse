@@ -1,27 +1,13 @@
-import { useEffect, useState } from 'react';
 import './App.css';
-import { useTodosQuery } from './hooks/useTodosQuery';
-import { Todo } from '../../todo-nest/dist/src/todo/entities/todo.entity';
+import { Link } from 'react-router-dom';
 
 function App() {
-  const { data: todoData = [] } = useTodosQuery();
-
-  const [todos, setTodos] = useState<Todo[]>(todoData);
-
-  useEffect(() => setTodos(todoData), [todoData]);
-
   return (
     <div className="App">
-      <h1>Todo List</h1>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id} className="todo-item">
-            <h2>{todo.name}</h2>
-            <p>Priority: {todo.priority}</p>
-            <p>Status: {todo.isDone ? 'Completed' : 'Incomplete'}</p>
-          </li>
-        ))}
-      </ul>
+      <h1>Welcome to the Todo App!</h1>
+      <nav>
+        <Link to="/todos">View Todos</Link>
+      </nav>
     </div>
   );
 }

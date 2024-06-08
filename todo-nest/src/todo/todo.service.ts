@@ -23,7 +23,7 @@ export class TodoService {
   }
 
   async findAll(): Promise<Todo[]> {
-    return this.db.select().from(todos).execute();
+    return this.db.select().from(todos).orderBy(todos.id).execute();
   }
 
   async findOne(id: number): Promise<Todo> {
