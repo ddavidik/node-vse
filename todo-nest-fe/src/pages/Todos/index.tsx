@@ -1,76 +1,26 @@
-import { FC, useEffect, useState } from 'react';
-import { Todo } from '../../../todo-nest/dist/src/todo/entities/todo.entity';
-import { useTodosQuery } from '../hooks/useTodosQuery';
-import { useEditTodo } from '../hooks/useEditTodo';
-import './Todos.css';
-import { useCreateTodo } from '../hooks/useCreateTodo';
-import { CreateTodoData } from '../api/createTodo';
+import { FC } from 'react';
+import './styles.css';
+import { useTodosHandlers } from '../../hooks/useTodosHandlers';
+import { LogoutButton } from '../../components/LogoutButton';
+import { Link } from 'react-router-dom';
 
 export const Todos: FC = () => {
-  const { data: todoData = [] } = useTodosQuery();
-  const { mutate: editTodo } = useEditTodo();
-  const { mutate: createTodo } = useCreateTodo();
-
-  const [todos, setTodos] = useState<Todo[]>(todoData);
-  const [editIndex, setEditIndex] = useState<number | null>(null);
-  const [editableTodo, setEditableTodo] = useState<Partial<Todo>>({});
-  const [newTodo, setNewTodo] = useState<CreateTodoData>({
-    name: '',
-    priority: 'normal',
-    isDone: false,
-  });
-
-  useEffect(() => setTodos(todoData), [todoData]);
-
-  const handleEditClick = (index: number) => {
-    setEditIndex(index);
-    setEditableTodo(todos[index]);
-  };
-
-  const handleSaveClick = (index: number) => {
-    const { id, name, isDone, priority } = {
-      ...todos[index],
-      ...editableTodo,
-    };
-
-    editTodo(
-      { id, name, isDone, priority },
-      {
-        onSuccess: () => {
-          setEditIndex(null);
-        },
-      }
-    );
-  };
-
-  const handleInputChange = (field: keyof Todo, value: string | boolean) => {
-    setEditableTodo({
-      ...editableTodo,
-      [field]: value,
-    });
-  };
-
-  const handleNewTodoChange = (field: keyof Todo, value: string | boolean) => {
-    setNewTodo({
-      ...newTodo,
-      [field]: value,
-    });
-  };
-
-  const handleCreateTodo = () => {
-    createTodo(newTodo, {
-      onSuccess: () => {
-        setNewTodo({
-          name: '',
-          priority: 'normal',
-          isDone: false,
-        });
-      },
-    });
-  };
+  const {
+    todos,
+    editIndex,
+    editableTodo,
+    newTodo,
+    handleEditClick,
+    handleDeleteClick,
+    handleSaveClick,
+    handleInputChange,
+    handleNewTodoChange,
+    handleCreateTodo,
+  } = useTodosHandlers();
 
   return (
     <div className="Todos">
+      <LogoutButton />
       <h1>Todo List</h1>
       <table className="todo-table">
         <thead>
@@ -127,11 +77,16 @@ export const Todos: FC = () => {
                 </>
               ) : (
                 <>
-                  <td>{todo.name}</td>
+                  <td>
+                    <Link to={`/todos/${todo.id}`}>{todo.name}</Link>
+                  </td>
                   <td>{todo.priority}</td>
                   <td>{todo.isDone ? 'Completed' : 'Incomplete'}</td>
                   <td>
                     <button onClick={() => handleEditClick(index)}>Edit</button>
+                    <button onClick={() => handleDeleteClick(index)}>
+                      Delete
+                    </button>
                   </td>
                 </>
               )}
@@ -139,7 +94,7 @@ export const Todos: FC = () => {
           ))}
         </tbody>
       </table>
-      <h2>Create New Todo</h2>
+      <h2 className="new-todo-title">Create New Todo</h2>
       <div className="new-todo-form">
         <input
           type="text"

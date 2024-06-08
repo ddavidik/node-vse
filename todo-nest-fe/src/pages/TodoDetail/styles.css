@@ -1,0 +1,55 @@
+.TodoDetail {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  padding: 2rem;
+  text-align: left;
+}
+
+.TodoDetail h1 {
+  margin-bottom: 3rem;
+}
+
+.TodoDetail div {
+  margin: 0.5rem 0;
+}
+
+.TodoDetail label {
+  font-size: 1.2rem;
+}
+
+.TodoDetail input,
+.TodoDetail select {
+  margin-left: 1rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.TodoDetail button {
+  margin: 0.7rem 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.TodoDetail button:hover {
+  background-color: #0056b3;
+}
+
+.back-button {
+  padding: 5px 10px;
+  color: white;
+  position: absolute;
+  left: 30px;
+  top: 30px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}

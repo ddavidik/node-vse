@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
-import { useSignIn } from '../hooks/useSignIn';
+import { useSignIn } from '../../hooks/useSignIn';
+import './styles.css';
 
 export const SignInPage: FC = () => {
   const [email, setEmail] = useState('');

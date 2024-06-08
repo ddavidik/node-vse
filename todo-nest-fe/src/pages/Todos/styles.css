@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   color: white;
-  height: 100vh;
+  height: 100%;
   justify-content: center;
 }
 
@@ -36,6 +36,7 @@
 }
 
 button {
+  margin-left: 0.75rem;
   padding: 5px 10px;
   color: white;
   background-color: #007bff;
@@ -48,8 +49,12 @@ button:hover {
   background-color: #0056b3;
 }
 
+.new-todo-title {
+  margin-top: 3rem;
+}
+
 .new-todo-form {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .new-todo-form input,

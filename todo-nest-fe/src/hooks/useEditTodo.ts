@@ -7,6 +7,7 @@ export const useEditTodo = () => {
   return useMutation({
     mutationKey: ['edit-todo'],
     mutationFn: editTodo,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ['todos', 'todo'] }),
   });
 };

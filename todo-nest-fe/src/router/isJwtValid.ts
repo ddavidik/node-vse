@@ -5,7 +5,9 @@ interface JwtPayload {
   [key: string]: unknown;
 }
 
-export const isJwtValid = (token: string): boolean => {
+export const isJwtValid = (token?: string): boolean => {
+  if (!token) return false;
+
   try {
     const { exp } = jwtDecode<JwtPayload>(token);
     if (!exp) {

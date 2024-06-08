@@ -1,17 +1,19 @@
 import { FC, PropsWithChildren } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
+import { isJwtValid } from './isJwtValid';
+import Cookies from 'js-cookie';
 
 type Props = PropsWithChildren<{
-  isAllowed: boolean;
   redirectPath?: string;
 }>;
 
 export const ProtectedRoute: FC<Props> = ({
-  isAllowed,
   redirectPath = '/auth/signin',
   children,
 }) => {
-  if (!isAllowed) return <Navigate to={redirectPath} replace />;
+  const isAuthenticated = isJwtValid(Cookies.get('jwt'));
+
+  if (!isAuthenticated) return <Navigate to={redirectPath} replace />;
 
   return <>{children || <Outlet />}</>;
 };
