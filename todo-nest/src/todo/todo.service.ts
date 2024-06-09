@@ -4,11 +4,13 @@ import { UpdateTodoDto, updateTodoSchema } from './dto/update-todo.dto';
 import { todos, Todo } from './entities/todo.entity';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { eq } from 'drizzle-orm';
+import { TodoGateway } from './gateway/todo.gateway';
 
 @Injectable()
 export class TodoService {
   constructor(
     @Inject('drizzleDatabase') private readonly db: ReturnType<typeof drizzle>,
+    private readonly todoGateway: TodoGateway,
   ) {}
 
   async create(createTodoDto: CreateTodoDto): Promise<Todo> {
@@ -19,6 +21,7 @@ export class TodoService {
       .returning()
       .execute();
 
+    this.todoGateway.emitTodoUpdate(todo);
     return todo;
   }
 
@@ -54,6 +57,7 @@ export class TodoService {
       throw new NotFoundException(`Todo with ID ${id} not found`);
     }
 
+    this.todoGateway.emitTodoUpdate(updatedTodo);
     return updatedTodo;
   }
 
@@ -67,5 +71,7 @@ export class TodoService {
     if (deleteResult.length === 0) {
       throw new NotFoundException(`Todo with ID ${id} not found`);
     }
+
+    this.todoGateway.emitTodoUpdate({ id });
   }
 }
