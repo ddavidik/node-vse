@@ -25,7 +25,6 @@ export const useSocket = (url: string) => {
     });
 
     return () => {
-      console.log('bruh');
       socket.disconnect();
     };
   }, [url, queryClient]);

@@ -14,7 +14,7 @@ export const useSignIn = () => {
 
       if (access_token) {
         Cookies.set('jwt', access_token, { expires: 7 });
-        navigate('/');
+        navigate('/todos');
       }
     },
     onError: (error) => {
